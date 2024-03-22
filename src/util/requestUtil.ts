@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { Agent as HttpsAgent } from 'https';
 
 import { IAuth } from "../model/types";
 import NoAuthorizationProvidedError from "../model/noAuthorizationProvidedError";
@@ -18,7 +19,10 @@ export default class RequestUtil {
 
     static async request(url: string, method: Function, auth?: IAuth, options?: any): Promise<any> {
         try {
-            return await method(url, { auth, ...options })
+            const httpsAgent = new HttpsAgent({
+                rejectUnauthorized: false
+            });
+            return await method(url, { auth, httpsAgent, ...options})
                 .then((response: AxiosResponse) => response.data);
         } catch (error: any) {
             this.handleError(error, url);

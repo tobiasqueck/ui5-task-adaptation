@@ -1,8 +1,8 @@
 {
     "name": "@ui5/task-adaptation",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "description": "Custom task for ui5-builder which allows building UI5 Flexibility Adaptation Projects for SAP BTP, Cloud Foundry environment",
-    "main": "index.js",
+    "main": "dist/index.js",
     "scripts": {
         "test": "npm run build && npm run coverage",
         "dev": "mocha --no-timeouts -r ts-node/register 'test/**/*.spec.ts'",
@@ -36,6 +36,9 @@
         "@buxlabs/amd-to-es6": "^0.16.1",
         "@rollup/plugin-node-resolve": "^13.0.4",
         "@sap/cf-tools": "^2.0.1",
+        "@sap-ux/axios-extension": "../open-ux-tools/packages/axios-extension",
+        "@sap-ux/store": "../open-ux-tools/packages/store",
+        "@sap-ux/system-access": "../open-ux-tools/packages/system-access",
         "@ui5/fs": "^2.0.6",
         "@ui5/logger": "^2.0.1",
         "@ui5/project": "^2.6.0",
