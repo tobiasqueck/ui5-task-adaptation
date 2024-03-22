@@ -8,13 +8,13 @@ const log = require("@ui5/logger").getLogger("@ui5/task-adaptation::AbapRepoMana
 const REQUEST_OPTIONS_XML = {
     responseType: "text",
     headers: {
-        "Content-Type": "text/xml"
+        "Accept": "text/html,application/xhtml+xml,application/xml"
     }
 };
 
 const REQUEST_OPTIONS_JSON = {
     headers: {
-        "Content-Type": "application/json"
+        "Accept": "application/json"
     }
 };
 
@@ -38,9 +38,10 @@ export default class AbapRepoManager {
 
 
     async downloadAnnotationFile(uri: string) {
+        const annotationUri = `https://${this.configuration.destination}.dest${uri}`;
         const annotation = await RequestUtil.retryWithAuth<string>(
-            () => RequestUtil.get(uri, REQUEST_OPTIONS_XML),
-            () => RequestUtil.get(uri, REQUEST_OPTIONS_XML, this.getAuth()));
+            () => RequestUtil.get(annotationUri, REQUEST_OPTIONS_XML),
+            () => RequestUtil.get(annotationUri, REQUEST_OPTIONS_XML, this.getAuth()));
         return new Map([["annotation.xml", annotation]]);
     }
 

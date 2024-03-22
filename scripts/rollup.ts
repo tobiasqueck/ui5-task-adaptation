@@ -65,21 +65,21 @@ export default class Builder {
             project,
             "bundleDefinition.js",
             "./dist/bundle.js",
-            "/sap.ui.fl",
             [
                 "/resources/sap/ui/fl/**",
                 "/resources/sap/suite/ui/generic/template/**"
-            ],
-            [
-                "sap/ui/thirdparty/URI"
             ]);
         await Bundler.run(
             project,
-            "bundleDefinition-resourceBundle.js",
-            "./dist/bundle-resourceBundle.js",
-            "/sap.ui.core",
+            "bundleDefinition-odata.js",
+            "./dist/bundle-odata.js",
             [
-                "/resources/sap/base/**"
+                "/resources/sap/ui/model/**",
+                "sap/ui/util/XMLHelper",
+                "sap/ui/core/Core"
+            ],
+            [
+                "sap/ui/performance/Measurement"
             ]
         );
     }

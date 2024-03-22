@@ -1,7 +1,9 @@
 import * as fs from "fs";
-import * as path from "path";
+
+import { posix as path } from "path";
 
 const resourceFactory = require("@ui5/fs/lib/resourceFactory");
+const UTF8 = "utf8";
 
 export default class ResourceUtil {
 
@@ -12,6 +14,17 @@ export default class ResourceUtil {
             newPath.push(projectNamespace);
         }
         return path.join(...newPath);
+    }
+
+
+    static relativeToRoot(resourcePath: string, projectNamespace?: string) {
+        const rootFolder = ResourceUtil.getRootFolder(projectNamespace);
+        return path.relative(rootFolder, resourcePath);
+    }
+
+
+    static getResourcePath(projectNamespace?: string, ...paths: string[]) {
+        return path.join(this.getRootFolder(projectNamespace), ...paths);
     }
 
 
@@ -35,7 +48,7 @@ export default class ResourceUtil {
             const entryPath = path.join(folder, entry);
             const stats = fs.lstatSync(entryPath);
             if (stats.isFile() && !exclude.some(filepath => entryPath.endsWith(filepath))) {
-                const normalized = entryPath.substring(rootFolder.length);
+                const normalized = entryPath.substring(rootFolder.length + 1);
                 files.set(normalized, fs.readFileSync(entryPath, { encoding: "utf-8" }));
             } else if (stats.isDirectory()) {
                 this.read(rootFolder, entryPath, files, exclude);
@@ -43,5 +56,27 @@ export default class ResourceUtil {
         }
     }
 
+
+    static getString(resource: any): Promise<string> {
+        return resource.getBuffer().then((buffer: Buffer) => buffer.toString(UTF8));
+    }
+
+
+    static getJson(resource: any): Promise<any> {
+        return resource.getBuffer().then((buffer: Buffer) => JSON.parse(buffer.toString(UTF8)));
+    }
+
+
+    static setString(resource: any, str: string): void {
+        resource.setBuffer(Buffer.from(str, UTF8));
+    }
+
+
+    static createResource(filename: string, projectNamespace: string, content: string) {
+        return resourceFactory.createResource({
+            path: this.getResourcePath(projectNamespace, filename),
+            string: content
+        });
+    }
 
 }
