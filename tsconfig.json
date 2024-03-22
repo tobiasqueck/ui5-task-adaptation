@@ -17,6 +17,7 @@
         "noImplicitReturns": false,
         "noImplicitThis": true,
         "downlevelIteration": true,
+        "skipLibCheck": true,
         "strict": true,
         "strictBindCallApply": true,
         "strictNullChecks": true,
